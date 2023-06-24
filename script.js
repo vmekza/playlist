@@ -1,23 +1,11 @@
-const textToType =
-  "Make in advance a playlist for your Celebration of Life.\n\nDo not take risk having bad songs on your last ride!\n\n";
+"use strict";
 
-const typingElement = document.querySelector(".content__img");
+const homeBtn = document.querySelector(".home__button");
 
-function typeText(text, index) {
-  if (index < text.length) {
-    typingElement.textContent += text.charAt(index);
-    if (text.charAt(index) === "\n") {
-      typingElement.innerHTML += "<br>";
-    }
-    setTimeout(() => typeText(text, index + 1), 100);
-  }
-}
-
-window.addEventListener("load", () => {
-  typeText(textToType, 0);
+homeBtn.addEventListener("click", () => {
+  window.location.href = "start.html";
 });
 
-const headerBtn = document.querySelector(".header__button");
-headerBtn.addEventListener("click", () => {
-  window.location.href = "start.html";
+setInterval(function () {
+  window.location.load();
 });
