@@ -13,19 +13,42 @@
   </head>
   <body>
     <div class="wrapper">
+      <div class="header">
+        <div class="header__container">
+          <nav class="header__menu menu">
+            <ul class="menu__list">
+              <li class="menu__item">
+                <a href="" class="menu__link">Home</a>
+              </li>
+              <li class="menu__item">
+                <a href="" class="menu__link">My playlist</a>
+              </li>
+              <li class="menu__item">
+                <a href="" class="menu__link">En|Rus</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
       <main class="main">
-        <section id="search__container">
-          <form class="search__form">
-            <input
-              class="search__field"
-              type="search"
-              name="search"
-              placeholder="Search..."
-            />
-            <input class="search__button" type="submit" value="Search" />
-          </form>
-          <div class="search__results"></div>
-        </section>
+        <div class="main__container">
+          <section class="songs">
+            <section class="songs__search search">
+              <div class="search__item">
+                <input
+                  class="search__field"
+                  type="text"
+                  placeholder="Enter name of artist or song..."
+                />
+                <button class="search__button button">Search</button>
+              </div>
+              <div class="search__result"></div>
+            </section>
+            <section class="songs__list list">
+              <p class="list__text">Your playlist is yet empty</p>
+            </section>
+          </section>
+        </div>
       </main>
     </div>
 
