@@ -6,6 +6,8 @@
 // });
 
 let term = "";
+let counter = 0;
+
 const searchTerm = () => {
   term = document.querySelector(".search__field").value;
   //check if searching item exist
@@ -57,11 +59,27 @@ const searchTerm = () => {
           //Styles
           searchResult.style.display = "flex";
           searchResult.style.marginBottom = "40px";
+          searchResult.style.fontSize = ".8rem";
+          img.style.width = "100px";
+          img.style.height = "100px";
           img.style.marginRight = "30px";
-          addBtn.style.marginLeft = "40px";
+          artist.style.maxWidth = "420px";
+          artist.style.marginBottom = "10px";
+          song.style.maxWidth = "420px";
           addBtn.style.textAlign = "center";
 
-          searchResultRight.style.display = "flex";
+          searchResult.style.position = "relative";
+          addBtn.style.position = "absolute";
+          addBtn.style.top = "0px";
+          addBtn.style.right = "100px";
+          addBtn.style.width = "70px";
+          addBtn.style.fontSize = ".8rem";
+
+          audio.style.position = "absolute";
+          audio.style.bottom = "0px";
+          audio.style.left = "110px";
+
+          // searchResultRight.style.display = "flex";
 
           //Add song to the list
           const songList = document.querySelector(".songs__list");
@@ -76,24 +94,41 @@ const searchTerm = () => {
             deleteBtn.style.color = "#181717";
             deleteBtn.style.borderColor = "#181717";
 
-            const copyImg = document.createElement("img");
+            // const copyImg = document.createElement("img");
             const copyArtist = document.createElement("p");
             const copySong = document.createElement("h4");
 
-            copyImg.src = img.src;
+            //Count number
+
+            counter++;
+            const number = document.createElement("span");
+            number.innerHTML = `${counter}`;
+            // copyImg.src = img.src;
             copyArtist.innerHTML = artist.innerHTML;
             copySong.innerHTML = song.innerHTML;
 
             songList.appendChild(songContainer);
-            songContainer.appendChild(copyImg);
+            songContainer.appendChild(number);
+            // songContainer.appendChild(copyImg);
             songContainer.appendChild(copyArtist);
             songContainer.appendChild(copySong);
             songContainer.appendChild(deleteBtn);
 
             deleteBtn.addEventListener("click", () => {
               songList.removeChild(songContainer);
+              updateSongNumbers();
             });
+            songList.appendChild(songContainer);
+            updateSongNumbers();
           });
+
+          function updateSongNumbers() {
+            const songContainers = songList.querySelectorAll("div");
+            songContainers.forEach((container, index) => {
+              const number = container.querySelector("span");
+              number.innerHTML = `${index + 1}`;
+            });
+          }
         });
       })
       .catch((error) => console.log("Request failed: ", error));

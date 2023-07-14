@@ -364,7 +364,84 @@ button:active {
   flex: 0 1 50%;
   background-color: #DFE0E2;
   min-height: 500px;
+
+  position: relative;
+
 }
 .list__text {
+  position: absolute;
+  text-align: center;
+  top: 40%;
+  font-size: 1.5rem;
+  line-height: 1.2;
+ 
+ 
   
+}
+.list__text:after, .list__text:before {
+	background-image: linear-gradient(90deg, #DFE0E2,  #DFE0E2);
+	content:'';
+	width: 100%;
+	height: 4px;
+	left: 0;
+	position: absolute;
+	z-index: 2;
+	animation: blinds 3s ease infinite alternate;   
+}
+
+.list__text:before {
+	top: 0px;
+}
+
+.list__text:after {
+	bottom: -10px;
+}
+
+@keyframes blinds {
+	0% {height: 52%;}
+	20% {height: 52%; }
+	100% {height: 4px;}
+}
+
+.songs__list:before, .songs__list:after {
+	content: '';
+	position: absolute;
+	width: 55%;
+	left: calc(50% - 30%);
+	height: 2px;
+	background-color: black;
+	z-index: 3;
+	animation: size 3s ease infinite alternate;
+}
+.songs__list:before {
+	background-color: black; 
+	top: 40%;
+}
+
+.songs__list:after {
+	background-color: black;
+	top: 59%;
+	z-index: 3;
+}
+@keyframes size {
+	0% {
+		top: 50%;
+		left: 50%;
+		width: 0%;
+	}
+	
+	20% {
+		width: 60%;
+		left: calc(50% - 30%);
+		top: 50%;
+	}
+  60% {
+		width: 60%; 
+		left: calc(50% - 30%);
+	}
+		
+	100% {
+		width: 60%;
+		left: calc(50% - 30%);
+	}
 }
