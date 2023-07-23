@@ -79,22 +79,25 @@ const searchTerm = () => {
           audio.style.bottom = "0px";
           audio.style.left = "110px";
 
-          // searchResultRight.style.display = "flex";
-
           //Add song to the list
           const songList = document.querySelector(".songs__list");
           const listText = document.querySelector(".list__text");
 
+          const totalContentHeight = songList.scrollHeight;
+          const newHeight = Math.max(totalContentHeight, 500);
+
           addBtn.addEventListener("click", () => {
-            listText.classList.add("visibility");
+            listText.classList.add("visibility", "hide-animation");
+            songList.classList.add("hide-animation");
             const songContainer = document.createElement("div");
             const deleteBtn = document.createElement("button");
+            const saveBtn = document.querySelector(".songs-save__button");
 
             deleteBtn.innerHTML = "Delete";
-            deleteBtn.style.color = "#181717";
-            deleteBtn.style.borderColor = "#181717";
+            deleteBtn.style.color = "#DFE0E2";
+            deleteBtn.style.borderColor = "#DFE0E2";
+            saveBtn.classList.remove("visibility");
 
-            // const copyImg = document.createElement("img");
             const copyArtist = document.createElement("p");
             const copySong = document.createElement("h4");
 
@@ -103,22 +106,29 @@ const searchTerm = () => {
             counter++;
             const number = document.createElement("span");
             number.innerHTML = `${counter}`;
-            // copyImg.src = img.src;
             copyArtist.innerHTML = artist.innerHTML;
             copySong.innerHTML = song.innerHTML;
 
             songList.appendChild(songContainer);
             songContainer.appendChild(number);
-            // songContainer.appendChild(copyImg);
             songContainer.appendChild(copyArtist);
             songContainer.appendChild(copySong);
             songContainer.appendChild(deleteBtn);
+
+            songContainer.style.display = "flex";
+            songContainer.style.marginBottom = "10px";
+            songContainer.style.padding = "10px";
+            songContainer.style.justifyContent = "space-between";
+            number.style.fontSize = "0.9rem";
+            copyArtist.style.fontSize = "0.9rem";
+            copySong.style.fontSize = "0.9rem";
 
             deleteBtn.addEventListener("click", () => {
               songList.removeChild(songContainer);
               updateSongNumbers();
             });
             songList.appendChild(songContainer);
+
             updateSongNumbers();
           });
 
@@ -127,6 +137,7 @@ const searchTerm = () => {
             songContainers.forEach((container, index) => {
               const number = container.querySelector("span");
               number.innerHTML = `${index + 1}`;
+              songList.style.height = `${newHeight}px`;
             });
           }
         });
