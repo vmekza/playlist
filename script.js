@@ -1,12 +1,17 @@
 "use strict";
 
-// const homeBtn = document.querySelector(".home__button");
-// homeBtn.addEventListener("click", () => {
-//   window.location.href = "start.html";
-// });
+document.addEventListener("DOMContentLoaded", () => {
+  let homeBtn = document.querySelector(".home__button");
+
+  homeBtn.addEventListener("click", () => {
+    window.location.href = "start.html";
+  });
+});
 
 let term = "";
 let counter = 0;
+
+let songListArray = [];
 
 const searchTerm = () => {
   term = document.querySelector(".search__field").value;
@@ -82,6 +87,7 @@ const searchTerm = () => {
           //Add song to the list
           const songList = document.querySelector(".songs__list");
           const listText = document.querySelector(".list__text");
+          let saveBtnExists = false;
 
           const totalContentHeight = songList.scrollHeight;
           const newHeight = Math.max(totalContentHeight, 500);
@@ -91,12 +97,10 @@ const searchTerm = () => {
             songList.classList.add("hide-animation");
             const songContainer = document.createElement("div");
             const deleteBtn = document.createElement("button");
-            const saveBtn = document.querySelector(".songs-save__button");
 
             deleteBtn.innerHTML = "Delete";
             deleteBtn.style.color = "#DFE0E2";
             deleteBtn.style.borderColor = "#DFE0E2";
-            saveBtn.classList.remove("visibility");
 
             const copyArtist = document.createElement("p");
             const copySong = document.createElement("h4");
@@ -126,9 +130,42 @@ const searchTerm = () => {
             deleteBtn.addEventListener("click", () => {
               songList.removeChild(songContainer);
               updateSongNumbers();
+              songContainer.removeChild(saveBtn);
             });
             songList.appendChild(songContainer);
 
+            if (!saveBtnExists) {
+              const saveBtn = document.createElement("button");
+              saveBtn.innerHTML = "Save";
+              saveBtn.style.color = "#DFE0E2";
+              saveBtn.style.borderColor = "#DFE0E2";
+              saveBtn.style.width = "70px";
+              saveBtn.style.fontSize = "0.8rem";
+              saveBtn.style.marginTop = "20px";
+
+              songContainer.appendChild(saveBtn);
+              saveBtnExists = true;
+
+              //Save songs to playlist
+
+              saveBtn.addEventListener("click", () => {
+                alert("Song saved!");
+
+                const artistText = copyArtist.textContent;
+                const songText = copySong.textContent;
+
+                const songInfo = {
+                  artist: artistText,
+                  song: songText,
+                };
+
+                songListArray.push(songInfo);
+
+                // localStorage.setItem("song_1", JSON.stringify(songInfo));
+
+                console.log(songListArray);
+              });
+            }
             updateSongNumbers();
           });
 
@@ -161,3 +198,20 @@ document.addEventListener(
   },
   true
 );
+
+//Playlist content
+const playlistLink = document.querySelector(".link__playlist");
+document.addEventListener("DOMContentLoaded", (event) => {
+  event.preventDefault();
+
+  playlistLink.addEventListener("click", () => {
+    const playlistContainer = document.querySelector(".playlist");
+    const container = document.createElement("div");
+
+    playlistContainer.appendChild(container);
+
+    container.style.width = "300px";
+    container.style.height = "50px";
+    container.style.backgroundColor = "red";
+  });
+});
