@@ -13,9 +13,9 @@ let counter = 0;
 
 let songListArray = [];
 
+//Search for song
 const searchTerm = () => {
   term = document.querySelector(".search__field").value;
-  //check if searching item exist
 
   if (!term || term === "") {
     alert("Please enter name of the artist or song");
@@ -134,39 +134,16 @@ const searchTerm = () => {
             });
             songList.appendChild(songContainer);
 
-            if (!saveBtnExists) {
-              const saveBtn = document.createElement("button");
-              saveBtn.innerHTML = "Save";
-              saveBtn.style.color = "#DFE0E2";
-              saveBtn.style.borderColor = "#DFE0E2";
-              saveBtn.style.width = "70px";
-              saveBtn.style.fontSize = "0.8rem";
-              saveBtn.style.marginTop = "20px";
+            const artistText = copyArtist.textContent;
+            const songText = copySong.textContent;
 
-              songContainer.appendChild(saveBtn);
-              saveBtnExists = true;
+            const songInfo = {
+              artist: artistText,
+              song: songText,
+            };
 
-              //Save songs to playlist
-
-              saveBtn.addEventListener("click", () => {
-                alert("Song saved!");
-
-                const artistText = copyArtist.textContent;
-                const songText = copySong.textContent;
-
-                const songInfo = {
-                  artist: artistText,
-                  song: songText,
-                };
-
-                songListArray.push(songInfo);
-
-                // localStorage.setItem("song_1", JSON.stringify(songInfo));
-
-                console.log(songListArray);
-              });
-            }
-            updateSongNumbers();
+            songListArray.push(songInfo);
+            localStorage.setItem("playlistData", JSON.stringify(songListArray));
           });
 
           function updateSongNumbers() {
@@ -198,20 +175,3 @@ document.addEventListener(
   },
   true
 );
-
-//Playlist content
-const playlistLink = document.querySelector(".link__playlist");
-document.addEventListener("DOMContentLoaded", (event) => {
-  event.preventDefault();
-
-  playlistLink.addEventListener("click", () => {
-    const playlistContainer = document.querySelector(".playlist");
-    const container = document.createElement("div");
-
-    playlistContainer.appendChild(container);
-
-    container.style.width = "300px";
-    container.style.height = "50px";
-    container.style.backgroundColor = "red";
-  });
-});

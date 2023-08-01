@@ -463,3 +463,7 @@ button:active {
   animation: none;
   background-color: transparent;
 }
+
+.playlist {
+  color: #FFFFF3;
+}
