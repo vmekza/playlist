@@ -466,4 +466,15 @@ button:active {
 
 .playlist {
   color: #FFFFF3;
+  /* background-color: #f7d7c4;
+  padding: 20px;
+  border-radius: 10px; */
+ 
+}
+
+
+.share-button {
+  position: relative;
+  bottom: 0px;
+  
 }

@@ -127,13 +127,7 @@ const searchTerm = () => {
             copyArtist.style.fontSize = "0.9rem";
             copySong.style.fontSize = "0.9rem";
 
-            deleteBtn.addEventListener("click", () => {
-              songList.removeChild(songContainer);
-              updateSongNumbers();
-              songContainer.removeChild(saveBtn);
-            });
-            songList.appendChild(songContainer);
-
+            //Add songs to local storage
             const artistText = copyArtist.textContent;
             const songText = copySong.textContent;
 
@@ -144,6 +138,29 @@ const searchTerm = () => {
 
             songListArray.push(songInfo);
             localStorage.setItem("playlistData", JSON.stringify(songListArray));
+
+            //Delete song from the playlist
+            deleteBtn.addEventListener("click", () => {
+              songList.removeChild(songContainer);
+              updateSongNumbers();
+              // songContainer.removeChild(saveBtn);
+
+              const objectToRemove = { artist: artistText, song: songText };
+              const indexToRemove = songListArray.findIndex(
+                (item) =>
+                  item.artist === objectToRemove.artist &&
+                  item.song === objectToRemove.song
+              );
+
+              if (indexToRemove !== -1) {
+                songListArray.splice(indexToRemove, 1);
+                localStorage.setItem(
+                  "playlistData",
+                  JSON.stringify(songListArray)
+                );
+              }
+            });
+            // songList.appendChild(songContainer);
           });
 
           function updateSongNumbers() {
