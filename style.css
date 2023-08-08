@@ -332,7 +332,6 @@ button:active {
 
 .songs {
   display: flex;
-
 }
 
 .songs__search {
@@ -340,7 +339,6 @@ button:active {
   color: #DFE0E2;
   margin: 0px 20px 0px 0px;
   font-size: 1rem;
-  /* overflow: hidden;  */
 }
 
 .search__item {

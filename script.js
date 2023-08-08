@@ -33,6 +33,7 @@ const searchTerm = () => {
         return artists.map((result) => {
           const searchResult = document.createElement("div"),
             searchResultLeft = document.createElement("div"),
+            searchResultMiddle = document.createElement("div"),
             searchResultRight = document.createElement("div"),
             artist = document.createElement("p"),
             song = document.createElement("h4"),
@@ -51,11 +52,12 @@ const searchTerm = () => {
           addBtn.innerHTML = "Add";
 
           searchResult.appendChild(searchResultLeft);
+          searchResult.appendChild(searchResultMiddle);
           searchResult.appendChild(searchResultRight);
           searchResultLeft.appendChild(img);
-          searchResultRight.appendChild(artist);
-          searchResultRight.appendChild(song);
-          searchResultRight.appendChild(audio);
+          searchResultMiddle.appendChild(artist);
+          searchResultMiddle.appendChild(song);
+          searchResultMiddle.appendChild(audio);
           audio.appendChild(audioSource);
           searchResultRight.appendChild(addBtn);
 
@@ -63,20 +65,28 @@ const searchTerm = () => {
 
           //Styles
           searchResult.style.display = "flex";
+          // searchResult.style.justifyContent = "space-between";
           searchResult.style.marginBottom = "40px";
           searchResult.style.fontSize = ".8rem";
+          // searchResultMiddle.style.marginRight = "10px";
           img.style.width = "100px";
           img.style.height = "100px";
           img.style.marginRight = "30px";
-          artist.style.maxWidth = "420px";
+          searchResultMiddle.style.width = "420px";
+          searchResultMiddle.style.marginRight = "10px";
           artist.style.marginBottom = "10px";
-          song.style.maxWidth = "420px";
-          addBtn.style.textAlign = "center";
+
+          // song.style.maxWidth = "420px";
+          song.style.textTransform = "uppercase";
+          song.style.overflow = "hidden";
+          song.style.textOverflow = "ellipsis";
+          song.style.whiteSpace = "nowrap";
 
           searchResult.style.position = "relative";
-          addBtn.style.position = "absolute";
-          addBtn.style.top = "0px";
-          addBtn.style.right = "100px";
+          addBtn.style.textAlign = "center";
+          // addBtn.style.position = "absolute";
+          // addBtn.style.top = "0px";
+          // addBtn.style.right = "100px";
           addBtn.style.width = "70px";
           addBtn.style.fontSize = ".8rem";
 
@@ -109,7 +119,7 @@ const searchTerm = () => {
 
             counter++;
             const number = document.createElement("span");
-            number.innerHTML = `${counter}`;
+            number.innerHTML = `${counter}.`;
             copyArtist.innerHTML = artist.innerHTML;
             copySong.innerHTML = song.innerHTML;
 
@@ -120,12 +130,18 @@ const searchTerm = () => {
             songContainer.appendChild(deleteBtn);
 
             songContainer.style.display = "flex";
+
             songContainer.style.marginBottom = "10px";
             songContainer.style.padding = "10px";
-            songContainer.style.justifyContent = "space-between";
+
             number.style.fontSize = "0.9rem";
+            number.style.marginRight = "25px";
             copyArtist.style.fontSize = "0.9rem";
+            copyArtist.style.marginRight = "15px";
+
             copySong.style.fontSize = "0.9rem";
+            copySong.style.textTransform = "uppercase";
+            copySong.style.marginRight = "20px";
 
             //Add songs to local storage
             const artistText = copyArtist.textContent;
