@@ -1,17 +1,39 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
-  let homeBtn = document.querySelector(".home__button");
-
-  homeBtn.addEventListener("click", () => {
-    window.location.href = "start.html";
+if (window.location.pathname.endsWith("start.html")) {
+  document.addEventListener("DOMContentLoaded", function () {
+    loadSavedPlaylist();
   });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  let startBtn = document.querySelector(".home__button");
+  let playlistLink = document.querySelector(".link__playlist");
+
+  // Function to navigate to 'start.html'
+  const navigateToStart = () => {
+    window.location.href = "start.html";
+  };
+
+  // Add event listener to the button
+  startBtn.addEventListener("click", navigateToStart);
+
+  // Add the same event listener to the link
+  playlistLink.addEventListener("click", navigateToStart);
 });
 
 let term = "";
-let counter = 0;
 
-let songListArray = [];
+// let songListArray = [];
+let songListArray = JSON.parse(localStorage.getItem("playlistData")) || [];
+let counter = songListArray.length;
+let shareBtnAdded = false;
+
+const songList = document.querySelector(".songs__list");
+const listText = document.querySelector(".list__text");
+
+const totalContentHeight = songList.scrollHeight;
+const newHeight = Math.max(totalContentHeight, 500);
 
 //Search for song
 const searchTerm = () => {
@@ -42,7 +64,7 @@ const searchTerm = () => {
             audioSource = document.createElement("source"),
             addBtn = document.createElement("button");
 
-          console.log(result);
+          // console.log(result);
 
           artist.innerHTML = result.artistName;
           song.innerHTML = result.trackName;
@@ -65,10 +87,9 @@ const searchTerm = () => {
 
           //Styles
           searchResult.style.display = "flex";
-          // searchResult.style.justifyContent = "space-between";
           searchResult.style.marginBottom = "40px";
           searchResult.style.fontSize = ".8rem";
-          // searchResultMiddle.style.marginRight = "10px";
+
           img.style.width = "100px";
           img.style.height = "100px";
           img.style.marginRight = "30px";
@@ -76,7 +97,6 @@ const searchTerm = () => {
           searchResultMiddle.style.marginRight = "10px";
           artist.style.marginBottom = "10px";
 
-          // song.style.maxWidth = "420px";
           song.style.textTransform = "uppercase";
           song.style.overflow = "hidden";
           song.style.textOverflow = "ellipsis";
@@ -84,9 +104,7 @@ const searchTerm = () => {
 
           searchResult.style.position = "relative";
           addBtn.style.textAlign = "center";
-          // addBtn.style.position = "absolute";
-          // addBtn.style.top = "0px";
-          // addBtn.style.right = "100px";
+
           addBtn.style.width = "70px";
           addBtn.style.fontSize = ".8rem";
 
@@ -95,12 +113,8 @@ const searchTerm = () => {
           audio.style.left = "110px";
 
           //Add song to the list
-          const songList = document.querySelector(".songs__list");
-          const listText = document.querySelector(".list__text");
-          let saveBtnExists = false;
-
-          const totalContentHeight = songList.scrollHeight;
-          const newHeight = Math.max(totalContentHeight, 500);
+          // const songList = document.querySelector(".songs__list");
+          // const listText = document.querySelector(".list__text");
 
           addBtn.addEventListener("click", () => {
             listText.classList.add("visibility", "hide-animation");
@@ -129,6 +143,15 @@ const searchTerm = () => {
             songContainer.appendChild(copySong);
             songContainer.appendChild(deleteBtn);
 
+            if (!shareBtnAdded) {
+              const shareBtn = document.createElement("button");
+              songList.appendChild(shareBtn);
+              shareBtn.innerHTML = "Share";
+              shareBtn.style.color = "#DFE0E2";
+              shareBtn.style.borderColor = "#DFE0E2";
+              shareBtnAdded = true;
+            }
+
             songContainer.style.display = "flex";
 
             songContainer.style.marginBottom = "10px";
@@ -153,15 +176,21 @@ const searchTerm = () => {
             };
 
             songListArray.push(songInfo);
+            console.log(songListArray);
             localStorage.setItem("playlistData", JSON.stringify(songListArray));
 
             //Delete song from the playlist
             deleteBtn.addEventListener("click", () => {
+              songListArray =
+                JSON.parse(localStorage.getItem("playlistData")) || [];
               songList.removeChild(songContainer);
+              console.log(songListArray);
               updateSongNumbers();
-              // songContainer.removeChild(saveBtn);
 
-              const objectToRemove = { artist: artistText, song: songText };
+              const objectToRemove = {
+                artist: songInfo.artist,
+                song: songInfo.song,
+              };
               const indexToRemove = songListArray.findIndex(
                 (item) =>
                   item.artist === objectToRemove.artist &&
@@ -183,7 +212,10 @@ const searchTerm = () => {
             const songContainers = songList.querySelectorAll("div");
             songContainers.forEach((container, index) => {
               const number = container.querySelector("span");
-              number.innerHTML = `${index + 1}`;
+              if (number !== null) {
+                // Check if the span element actually exists
+                number.innerHTML = `${index + 1}`;
+              }
               songList.style.height = `${newHeight}px`;
             });
           }
@@ -208,3 +240,90 @@ document.addEventListener(
   },
   true
 );
+
+function loadSavedPlaylist() {
+  songList.innerHTML = ""; // Clear existing song containers
+
+  const savedPlaylistData = JSON.parse(localStorage.getItem("playlistData"));
+
+  if (savedPlaylistData && savedPlaylistData.length > 0) {
+    listText.classList.add("visibility", "hide-animation");
+    songList.classList.add("hide-animation");
+
+    savedPlaylistData.forEach((songData) => {
+      const songContainer = document.createElement("div");
+      const deleteBtn = document.createElement("button");
+
+      deleteBtn.innerHTML = "Delete";
+      deleteBtn.style.color = "#DFE0E2";
+      deleteBtn.style.borderColor = "#DFE0E2";
+
+      const copyArtist = document.createElement("p");
+      const copySong = document.createElement("h4");
+
+      //Count number
+      counter++;
+      const number = document.createElement("span");
+      number.innerHTML = `${counter}.`;
+      copyArtist.innerHTML = songData.artist;
+      copySong.innerHTML = songData.song;
+
+      songList.appendChild(songContainer);
+      songContainer.appendChild(number);
+      songContainer.appendChild(copyArtist);
+      songContainer.appendChild(copySong);
+      songContainer.appendChild(deleteBtn);
+
+      songContainer.style.display = "flex";
+      songContainer.style.marginBottom = "10px";
+      songContainer.style.padding = "10px";
+
+      number.style.fontSize = "0.9rem";
+      number.style.marginRight = "25px";
+      copyArtist.style.fontSize = "0.9rem";
+      copyArtist.style.marginRight = "15px";
+      copySong.style.fontSize = "0.9rem";
+      copySong.style.textTransform = "uppercase";
+      copySong.style.marginRight = "20px";
+
+      deleteBtn.addEventListener("click", () => {
+        songListArray = JSON.parse(localStorage.getItem("playlistData")) || [];
+        songList.removeChild(songContainer);
+        console.log(songListArray);
+        updateSongNumbers();
+
+        const objectToRemove = {
+          artist: copyArtist.innerHTML,
+          song: copySong.innerHTML,
+        };
+        const indexToRemove = songListArray.findIndex(
+          (item) =>
+            item.artist === objectToRemove.artist &&
+            item.song === objectToRemove.song
+        );
+
+        if (indexToRemove !== -1) {
+          songListArray.splice(indexToRemove, 1);
+          localStorage.setItem("playlistData", JSON.stringify(songListArray));
+        }
+      });
+
+      function updateSongNumbers() {
+        const songContainers = songList.querySelectorAll("div");
+        songContainers.forEach((container, index) => {
+          const number = container.querySelector("span");
+          if (number !== null) {
+            // Check if the span element actually exists
+            number.innerHTML = `${index + 1}`;
+          }
+          songList.style.height = `${newHeight}px`;
+        });
+      }
+    });
+  } else {
+    const songContainer = document.createElement("div");
+    songContainer.innerHTML = "Your playlist is empty";
+    songList.appendChild(songContainer);
+    songContainer.style.fontSize = "0.9rem";
+  }
+}
